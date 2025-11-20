@@ -5,7 +5,7 @@ dr.set_flag(dr.JitFlag.LoopRecord, False)
 dr.set_flag(dr.JitFlag.VCallRecord, False)
 
 import os
-os.environ["TORCH_CUDA_ARCH_LIST"] = "8.9"  # 替换为你的 GPU 架构
+os.environ["TORCH_CUDA_ARCH_LIST"] = "8.9" # for RTX 4060
 
 import sys
 sys.path.append('..')
@@ -16,6 +16,9 @@ from utils import binning2d, angle2xyz
 
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+
+# Create an alias for convenience
+from mitsuba import ScalarTransform4f
 
 
 ## Render the scene
@@ -28,10 +31,10 @@ def get_scene(bsdf,integrator,width=800,height=800):
         'camera': {
             'type': 'perspective',
             'fov': 30,
-            'to_world': mi.ScalarTransform4f.look_at(
-                origin=[0, 3.1, 6.08],
-                target=[0, 0.0, 0.0],
-                up=[0, 1, 0]
+            'to_world': ScalarTransform4f().look_at(
+                origin=mi.ScalarPoint3f([0, 3.1, 6.08]),
+                target=mi.ScalarPoint3f([0, 0.0, 0.0]),
+                up=mi.ScalarVector3f([0, 1,0])
             ),
             'film': {
                 'type': 'hdrfilm',
