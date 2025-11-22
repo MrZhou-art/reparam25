@@ -1,3 +1,5 @@
+.idea/
+
 /datas/
 **/__pycache__/
 notebooks/*
