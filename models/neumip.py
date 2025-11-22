@@ -26,9 +26,9 @@ def fetch2D(texture,uv):
     uv -= uv0
     uv0 %= H
     
-    u0,v0 = uv0.T
-    u1,v1 = uv1.T
-    u,v = uv.T
+    u0,v0 = uv0.T[0], uv0.T[1]
+    u1,v1 = uv1.T[0], uv1.T[1]
+    u,v = uv.T[0], uv.T[1]
     
     ret = (texture[:,v0,u0]*(1-u)*(1-v)+texture[:,v0,u1]*u*(1-v)\
         + texture[:,v1,u0]*(1-u)*v+texture[:,v1,u1]*u*v).T
@@ -91,6 +91,14 @@ class NeuMIP(nn.Module):
     def eval_texture(self,uv,wo):
         """ CUDA version of get_displace """
         f_offset = fetch2D(self.offset_texture,uv.clone())
+
+        # for debug
+        print("=== eval_texture(): information ===")
+        print(f"f_offset shape: {f_offset.shape}")
+        print(f"f_offset shape: {self.offset_params}")
+        print("============================")
+
+
         r = mlp_fused32(1,2,1,torch.cat([f_offset,wo[...,:2]],-1).half(),self.offset_params).float()
         uv_offset = (r/(1-wo.pow(2).sum(-1,keepdim=True)).clamp_min(0.36).sqrt())*wo
         uv_new = (uv_offset + uv)

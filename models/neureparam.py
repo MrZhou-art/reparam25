@@ -58,6 +58,15 @@ class NeuReparam(nn.Module):
         Return:
             Bx((2*L+1)*2+T) condition feature
         """
+
+        # for debug
+        print("=== encode_cond(): wo, f information ===")
+        print(f"self.encode(wo) shape: {self.encode(wo).shape}")
+        print(f"f shape: {f.shape}")
+        print("============================")
+
+        # assert wo.shape[0] == f.shape[0], f"batch size error：wo={wo.shape[0]}, f={f.shape[0]}"
+
         #if f is None:
         #    return self.encode(wo)
         #else:

@@ -156,10 +156,16 @@ class NeuBSDF(mi.BSDF):
         uv_ = (si.uv.torch()*self.uv_scale)
         wi_ = (si.wi*flip).torch()[...,:2]
         wo_ = (wo*flip).torch()
-        
+
+        # for debug
+        print("=== eval_pdf(): information ===")
+        print(f"uv_ shape: {uv_.shape}")
+        print(f"wi_ shape: {wi_.shape}")
+        print("============================")
+
         f_rgb_ = self.neumip.eval_texture(uv_,wi_)
         cond_ = self.neusampler.encode_cond(wi_,f_rgb_)
-        
+
         pdf_ = self.neusampler.pdf_cond(cond_,wo_)
         btf_ = self.neumip.eval(f_rgb_,wi_,wo_[...,:2]).relu()
         btf_ *= (wo_[...,:2].pow(2).sum(-1,keepdim=True)<=THRESH)

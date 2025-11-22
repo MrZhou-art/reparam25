@@ -1,3 +1,5 @@
+import os
+os.environ["TORCH_CUDA_ARCH_LIST"] = "8.9" # for RTX 4060
 
 import torch
 import torch.nn.functional as NF
