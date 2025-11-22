@@ -136,7 +136,7 @@ class NeuBSDF(mi.BSDF):
         
         uv_ = (si.uv.torch()*self.uv_scale)
         wi_ = (si.wi*flip).torch()[...,:2]
-        wo_ = (wo*flip).torch()[...,:2]
+        wo_ = (wo*flip).torch()
         
         f_rgb_ = self.neumip.eval_texture(uv_,wi_)
         cond_ = self.neusampler.encode_cond(wi_,f_rgb_)
@@ -155,7 +155,7 @@ class NeuBSDF(mi.BSDF):
         
         uv_ = (si.uv.torch()*self.uv_scale)
         wi_ = (si.wi*flip).torch()[...,:2]
-        wo_ = (wo*flip).torch()[...,:2]
+        wo_ = (wo*flip).torch()
         
         f_rgb_ = self.neumip.eval_texture(uv_,wi_)
         cond_ = self.neusampler.encode_cond(wi_,f_rgb_)

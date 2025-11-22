@@ -58,11 +58,10 @@ class NeuReparam(nn.Module):
         Return:
             Bx((2*L+1)*2+T) condition feature
         """
-        print(f"f shape: {f.shape}, encoded_wo shape: {self.encode(wo).shape}")  # 调试打印
-        if f is None:
-            return self.encode(wo)
-        else:
-            return torch.cat([f,self.encode(wo)],-1)
+        #if f is None:
+        #    return self.encode(wo)
+        #else:
+        return torch.cat([f,self.encode(wo)],-1)
 
 
     def forward(self,cond,z):
